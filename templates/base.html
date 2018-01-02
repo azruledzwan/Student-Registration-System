@@ -1,4 +1,3 @@
-
 {% load static %}
 {% load i18n %}
 
@@ -19,10 +18,12 @@
     <link href="http://getbootstrap.com/docs/3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="http://getbootstrap.com/docs/3.3/assets/css/ie10-viewport-bug-workaround.csss" rel="stylesheet">
+    <link href="http://getbootstrap.com/docs/3.3/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="http://getbootstrap.com/docs/3.3/examples/sticky-footer-navbar/sticky-footer-navbar.css" rel="stylesheet">
+
+    {% block head_datatables_css %}{% endblock %}
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -36,7 +37,7 @@
   </head>
 
   <body>
-     {% block navbar %}
+{% block navbar %}
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
@@ -72,12 +73,9 @@
     </nav>
     {% endblock %}
 
-
     <!-- Begin page content -->
-     {% block maincontent %}
     <div class="container">
-
-        {% block messages %}
+       {% block messages %}
           
           {% if messages %}
             {% regroup messages|dictsort:"tags" by tags as message_list  %}
@@ -105,19 +103,17 @@
       
       {% block content %}
 
+
       <div class="page-header">
         <h1>Sticky footer with fixed navbar</h1>
       </div>
       <p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body &gt; .container</code>.</p>
       <p>Back to <a href="../sticky-footer">the default sticky footer</a> minus the navbar.</p>
-    </div>
+      </div>
 
     {% endblock %}
 
-    </div>
-    {% endblock %}
-
-    {% block footer %}
+        {% block footer %}
 
     <footer class="footer">
       <div class="container">
@@ -127,16 +123,15 @@
 
     {% endblock %}
 
-
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="http://getbootstrap.com/docs/3.3/dist/js/bootstrap.min.js"></script>
-    {% block head_datatables_js %}{% endblock %}
+      {% block head_datatables_js %}{% endblock %}
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="http://getbootstrap.com/docs/3.3/assets/js/ie10-viewport-bug-workaround.js"></script>
-     {% block head_datatables_script %}{% endblock %}
+    {% block head_datatables_script %}{% endblock %}
   </body>
 </html>
