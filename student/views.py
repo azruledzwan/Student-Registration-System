@@ -4,10 +4,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib import messages
-#from django.utils import timezone
+from django.utils import timezone
 from .models import student
 from .forms import studentForm
-#from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.db.models import Count, Sum, Q, Case, Value, When, IntegerField
@@ -40,6 +40,36 @@ def student_new(request):
 def student_detail(request,pk):
     Student = get_object_or_404(student, pk=pk)
     return render(request, 'student/student_detail.html', {'student': Student})
+
+def student_edit(request,pk):
+
+    students = get_object_or_404(student, pk=pk)
+    if request.method == "POST":
+        form = studentForm(request.POST,instance=students)
+        if form.is_valid():
+            students = form.save(commit=False)
+            students.createdby = request.user
+            students.save()
+            # return redirect('post_detail', pk=post.pk)
+            messages.success(request, "Student record with ID: " + str(students.pk) + " has been updated! ")
+            return redirect(reverse_lazy('student_detail',kwargs={'pk': students.pk }))
+    else:
+        form = studentForm(instance=students)
+    
+    return render(request, 'student/student_edit.html', {'form': form})
+
+
+def student_remove(request,pk):
+
+    student1 = get_object_or_404(student, pk=pk)
+    if request.method == "POST":
+        if request.POST.get("submit_yes", ""):
+            icnum = student1.icnum
+            student1.delete()
+            messages.success(request, "Student record with ID: " + str(icnum) + " has been removed! ")
+            return redirect(reverse_lazy('student_home'))
+
+    return render(request, 'student/student_confirm_delete.html', {'student': student1, 'pk':pk})
 
 
 	# Student JSON list filtering
